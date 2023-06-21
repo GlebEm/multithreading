@@ -20,22 +20,27 @@ public class Solution {
     public static void main(String[] args) {
         ThreadNamePrinter tnp = new ThreadNamePrinter();
         tnp.start();
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++) { //4. Метод main должен вызвать метод printMsg у объекта типа ThreadNamePrinter 5 раз.
             tnp.printMsg();
         }
     }
 
     public static class ThreadNamePrinter extends Thread {
-        public void run() {
+        public void run() { //5. Метод run должен вызвать метод printMsg 5 раз.
             for (int i = 0; i < count; i++) {
                 printMsg();
             }
         }
 
         public void printMsg() {
-            Thread t = null;//присвой переменной t текущую нить
-            String name = t.getName();
+            Thread t = currentThread();//присвой переменной t текущую нить
+            String name = t.getName(); //3. Метод printMsg должен вызывать метод getName у текущей нити.
             System.out.println("Name=" + name);
+            try {
+                Thread.sleep(1); //2. Метод printMsg должен должен усыплять нить на 1 миллисекунду.
+            }catch (InterruptedException e){
+                e.printStackTrace();
+            }
             //add sleep here - добавь sleep тут
         }
     }

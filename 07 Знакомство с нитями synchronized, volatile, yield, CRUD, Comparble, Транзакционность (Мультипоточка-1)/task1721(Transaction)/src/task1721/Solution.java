@@ -1,45 +1,87 @@
 package task1721;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
 
 /* 
-РўСЂР°РЅР·Р°РєС†РёРѕРЅРЅРѕСЃС‚СЊ
-РЎРґРµР»Р°С‚СЊ РјРµС‚РѕРґ joinData С‚СЂР°РЅР·Р°РєС†РёРѕРЅРЅС‹Рј, С‚.Рµ. РµСЃР»Рё РїСЂРѕРёР·РѕС€РµР» СЃР±РѕР№, С‚Рѕ РґР°РЅРЅС‹Рµ РЅРµ РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ РёР·РјРµРЅРµРЅС‹.
-1. РЎС‡РёС‚Р°С‚СЊ СЃ РєРѕРЅСЃРѕР»Рё 2 РёРјРµРЅРё С„Р°Р№Р»Р°.
-2. РЎС‡РёС‚Р°С‚СЊ РїРѕСЃС‚СЂРѕС‡РЅРѕ РґР°РЅРЅС‹Рµ РёР· С„Р°Р№Р»РѕРІ. РР· РїРµСЂРІРѕРіРѕ С„Р°Р№Р»Р° - РІ allLines, РёР· РІС‚РѕСЂРѕРіРѕ - РІ forRemoveLines.
-Р’ РјРµС‚РѕРґРµ joinData:
-3. Р•СЃР»Рё СЃРїРёСЃРѕРє allLines СЃРѕРґРµСЂР¶РёС‚ РІСЃРµ СЃС‚СЂРѕРєРё РёР· forRemoveLines, С‚Рѕ СѓРґР°Р»РёС‚СЊ РёР· СЃРїРёСЃРєР° allLines РІСЃРµ СЃС‚СЂРѕРєРё, РєРѕС‚РѕСЂС‹Рµ РµСЃС‚СЊ РІ forRemoveLines.
-4. Р•СЃР»Рё СѓСЃР»РѕРІРёРµ РёР· Рї.3 РЅРµ РІС‹РїРѕР»РЅРµРЅРѕ, С‚Рѕ:
-4.1. РѕС‡РёСЃС‚РёС‚СЊ allLines РѕС‚ РґР°РЅРЅС‹С…
-4.2. РІС‹Р±СЂРѕСЃРёС‚СЊ РёСЃРєР»СЋС‡РµРЅРёРµ CorruptedDataException
-РњРµС‚РѕРґ joinData РґРѕР»Р¶РµРЅ РІС‹Р·С‹РІР°С‚СЊСЃСЏ РІ main. Р’СЃРµ РёСЃРєР»СЋС‡РµРЅРёСЏ РѕР±СЂР°Р±РѕС‚Р°Р№С‚Рµ РІ РјРµС‚РѕРґРµ main.
-РќРµ Р·Р°Р±СѓРґСЊ Р·Р°РєСЂС‹С‚СЊ РїРѕС‚РѕРєРё.
+Транзакционность
+Сделать метод joinData транзакционным, т.е. если произошел сбой, то данные не должны быть изменены.
+1. Считать с консоли 2 имени файла.
+2. Считать построчно данные из файлов. Из первого файла - в allLines, из второго - в forRemoveLines.
+В методе joinData:
+3. Если список allLines содержит все строки из forRemoveLines, то удалить из списка allLines все строки, которые есть в forRemoveLines.
+4. Если условие из п.3 не выполнено, то:
+4.1. очистить allLines от данных
+4.2. выбросить исключение CorruptedDataException
+Метод joinData должен вызываться в main. Все исключения обработайте в методе main.
+Не забудь закрыть потоки.
 
 
 Requirements:
-1. РљР»Р°СЃСЃ Solution РґРѕР»Р¶РµРЅ СЃРѕРґРµСЂР¶Р°С‚СЊ public static РїРѕР»Рµ allLines С‚РёРїР° List<String>.
-2. РљР»Р°СЃСЃ Solution РґРѕР»Р¶РµРЅ СЃРѕРґРµСЂР¶Р°С‚СЊ public static РїРѕР»Рµ forRemoveLines С‚РёРїР° List<String>.
-3. РљР»Р°СЃСЃ Solution РґРѕР»Р¶РµРЅ СЃРѕРґРµСЂР¶Р°С‚СЊ public void РјРµС‚РѕРґ joinData() РєРѕС‚РѕСЂС‹Р№ РјРѕР¶РµС‚ Р±СЂРѕСЃР°С‚СЊ РёСЃРєР»СЋС‡РµРЅРёРµ CorruptedDataException.
-4. РџСЂРѕРіСЂР°РјРјР° РґРѕР»Р¶РЅР° СЃС‡РёС‚С‹РІР°С‚СЊ c РєРѕРЅСЃРѕР»Рё РёРјРµРЅР° РґРІСѓС… С„Р°Р№Р»РѕРІ.
-5. РџСЂРѕРіСЂР°РјРјР° РґРѕР»Р¶РЅР° СЃС‡РёС‚С‹РІР°С‚СЊ РїРѕСЃС‚СЂРѕС‡РЅРѕ РґР°РЅРЅС‹Рµ РёР· РїРµСЂРІРѕРіРѕ С„Р°Р№Р»Р° РІ СЃРїРёСЃРѕРє allLines.
-6. РџСЂРѕРіСЂР°РјРјР° РґРѕР»Р¶РЅР° СЃС‡РёС‚С‹РІР°С‚СЊ РїРѕСЃС‚СЂРѕС‡РЅРѕ РґР°РЅРЅС‹Рµ РёР· РІС‚РѕСЂРѕРіРѕ С„Р°Р№Р»Р° РІ СЃРїРёСЃРѕРє forRemoveLines.
-7. РњРµС‚РѕРґ joinData РґРѕР»Р¶РµРЅ СѓРґР°Р»РёС‚СЊ РІ СЃРїРёСЃРєРµ allLines РІСЃРµ СЃС‚СЂРѕРєРё РёР· СЃРїРёСЃРєР° forRemoveLines, РµСЃР»Рё РІ allLines СЃРѕРґРµСЂР¶Р°С‚СЊСЃСЏ РІСЃРµ СЃС‚СЂРѕРєРё РёР· СЃРїРёСЃРєР° forRemoveLines.
-8. РњРµС‚РѕРґ joinData РґРѕР»Р¶РµРЅ РѕС‡РёСЃС‚РёС‚СЊ СЃРїРёСЃРѕРє allLines Рё РІС‹Р±СЂРѕСЃРёС‚СЊ РёСЃРєР»СЋС‡РµРЅРёРµ CorruptedDataException, РµСЃР»Рё РІ allLines РЅРµ СЃРѕРґРµСЂР¶Р°С‚СЊСЃСЏ РІСЃРµ СЃС‚СЂРѕРєРё РёР· СЃРїРёСЃРєР° forRemoveLines.
-9. РњРµС‚РѕРґ joinData РґРѕР»Р¶РµРЅ РІС‹Р·С‹РІР°С‚СЊСЃСЏ РІ main.
+1. Класс Solution должен содержать public static поле allLines типа List<String>.
+2. Класс Solution должен содержать public static поле forRemoveLines типа List<String>.
+3. Класс Solution должен содержать public void метод joinData() который может бросать исключение CorruptedDataException.
+4. Программа должна считывать c консоли имена двух файлов.
+5. Программа должна считывать построчно данные из первого файла в список allLines.
+6. Программа должна считывать построчно данные из второго файла в список forRemoveLines.
+7. Метод joinData должен удалить в списке allLines все строки из списка forRemoveLines, если в allLines содержаться все строки из списка forRemoveLines.
+8. Метод joinData должен очистить список allLines и выбросить исключение CorruptedDataException, если в allLines не содержаться все строки из списка forRemoveLines.
+9. Метод joinData должен вызываться в main.
 */
 
 public class Solution {
-    public static List<String> allLines = new ArrayList<String>();
-    public static List<String> forRemoveLines = new ArrayList<String>();
+    public static List<String> allLines = new ArrayList<String>(); //1. Класс Solution должен содержать public static поле allLines типа List<String>
+    public static List<String> forRemoveLines = new ArrayList<String>(); //2. Класс Solution должен содержать public static поле forRemoveLines типа List<String>.
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        String way1 = reader.readLine();
+        String way2 = reader.readLine();
+        reader.close();
+        File file1 = new File(way1);  //   C:/Users/Admin/Desktop/Test.txt
+        File file2 = new File(way2); //    C:/Users/Admin/Desktop/Test2.txt
+        Scanner scanner1 = new Scanner(file1);
+        System.out.println("Первый лист, считанный из первого файла");
+        while (scanner1.hasNext()) {
+//            System.out.println(scanner1.nextLine());
+            allLines.add(scanner1.nextLine());   //5. Программа должна считывать построчно данные из первого файла в список allLines.
+        }
+        System.out.println(allLines);
+
+        Scanner scanner2 = new Scanner(file2);
+        System.out.println("Второй лист, считанный из второго файла");
+        while (scanner2.hasNext()) {
+//            System.out.println(scanner2.nextLine());
+            forRemoveLines.add(scanner2.nextLine());  //6. Программа должна считывать построчно данные из второго файла в список forRemoveLines.
+        }
+        System.out.println(forRemoveLines);
+        try {
+            new Solution().joinData();
+        } catch (CorruptedDataException e) {
+            System.out.println("Проверка как там дела после чистки");
+        }
+        System.out.println("Первый лист:" + "\n" + allLines);
+        System.out.println("Второй лист:" + "\n" + forRemoveLines);
     }
 
-    public void joinData() throws CorruptedDataException {
+    /**
+     * 7. Метод joinData должен удалить в списке allLines все строки из списка forRemoveLines, если в
+     * allLines содержаться все строки из списка forRemoveLines.
+     * 8. Метод joinData должен очистить список allLines и выбросить исключение CorruptedDataException,
+     * если в allLines не содержаться все строки из списка forRemoveLines.
+     * 9. Метод joinData должен вызываться в main.
+     */
 
+    public void joinData() throws CorruptedDataException { //3. Класс Solution должен содержать public void метод joinData() который может бросать исключение CorruptedDataException
+        if (allLines.containsAll(forRemoveLines)) {
+            allLines.removeAll(forRemoveLines);
+            return;
+        } else {
+            allLines.clear();
+            throw new CorruptedDataException();
+        }
     }
 }

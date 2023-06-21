@@ -5,7 +5,8 @@ import java.util.List;
 
 /* 
 Список и нити
-В методе main добавить в статический объект list 5 нитей. Каждая нить должна быть новым объектом класса Thread, работающим со своим объектом класса SpecialThread.
+В методе main добавить в статический объект list 5 нитей.
+Каждая нить должна быть новым объектом класса Thread, работающим со своим объектом класса SpecialThread.
 
 
 Requirements:
@@ -19,6 +20,23 @@ public class Solution {
     public static volatile List<Thread> list = new ArrayList<Thread>(5);
 
     public static void main(String[] args) {
+        SpecialThread specialThread1 = new SpecialThread();
+        SpecialThread specialThread2 = new SpecialThread();
+        SpecialThread specialThread3 = new SpecialThread();
+        SpecialThread specialThread4 = new SpecialThread();
+        SpecialThread specialThread5 = new SpecialThread();
+
+        list.add(new Thread(specialThread1));
+        list.add(new Thread(specialThread2));
+        list.add(new Thread(specialThread3));
+        list.add(new Thread(specialThread4));
+        list.add(new Thread(specialThread5));
+
+
+//        specialThread1.run();
+//        System.out.println(list.size());
+//        Thread t1 = new Thread(new SpecialThread());
+//        t1.start();
         //напишите тут ваш код
     }
 

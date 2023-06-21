@@ -4,27 +4,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 /* 
-Р—Р°РјРµС‚РєРё
-РђСЃРёРЅС…СЂРѕРЅРЅРѕСЃС‚СЊ РІС‹РїРѕР»РЅРµРЅРёСЏ РЅРёС‚РµР№.
-1. РљР»Р°СЃСЃ Note Р±СѓРґРµС‚ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊСЃСЏ РЅРёС‚СЏРјРё.
-2. РЎРѕР·РґР°Р№ public static РЅРёС‚СЊ NoteThread (Runnable РЅРµ СЏРІР»СЏРµС‚СЃСЏ РЅРёС‚СЊСЋ), РєРѕС‚РѕСЂР°СЏ РІ РјРµС‚РѕРґРµ run 1000 СЂР°Р· (index = 0-999) СЃРґРµР»Р°РµС‚ СЃР»РµРґСѓСЋС‰РёРµ РґРµР№СЃС‚РІРёСЏ:
-2.1. РСЃРїРѕР»СЊР·СѓСЏ РјРµС‚РѕРґ addNote РґРѕР±Р°РІРёС‚ Р·Р°РјРµС‚РєСѓ СЃ РёРјРµРЅРµРј [getName() + "-Note" + index], РЅР°РїСЂРёРјРµСЂ, РїСЂРё index=4
+Заметки
+Асинхронность выполнения нитей.
+1. Класс Note будет использоваться нитями.
+2. Создай public static нить NoteThread (Runnable не является нитью), которая в методе run 1000 раз (index = 0-999) сделает следующие действия:
+2.1. Используя метод addNote добавит заметку с именем [getName() + "-Note" + index], например, при index=4
 "Thread-0-Note4"
-2.2. Р—Р°СЃРЅРµС‚ РЅР° 1 РјРёР»Р»РёСЃРµРєСѓРЅРґСѓ
-2.3. РСЃРїРѕР»СЊР·СѓСЏ РјРµС‚РѕРґ removeNote СѓРґР°Р»РёС‚ Р·Р°РјРµС‚РєСѓ
-2.4. Р’ РєР°С‡РµСЃС‚РІРµ РїР°СЂР°РјРµС‚СЂР° РІ removeNote РїРµСЂРµРґР°Р№ РёРјСЏ РЅРёС‚Рё - РјРµС‚РѕРґ getName()
+2.2. Заснет на 1 миллисекунду
+2.3. Используя метод removeNote удалит заметку
+2.4. В качестве параметра в removeNote передай имя нити - метод getName()
 
 
 Requirements:
-1. РљР»Р°СЃСЃ Solution РґРѕР»Р¶РµРЅ СЃРѕРґРµСЂР¶Р°С‚СЊ public static РєР»Р°СЃСЃ NoteThread.
-2. РљР»Р°СЃСЃ NoteThread РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РЅРёС‚СЊСЋ.
-3. Р’ РјРµС‚РѕРґРµ run РєР»Р°СЃСЃР° NoteThread РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ С†РёРєР».
-4. РњРµС‚РѕРґ run РєР»Р°СЃСЃР° NoteThread РґРѕР»Р¶РµРЅ 1000 СЂР°Р· РІС‹Р·С‹РІР°С‚СЊ РјРµС‚РѕРґ addNote c РїР°СЂР°РјРµС‚СЂРѕРј (getName() + "-Note" + index).
-5. РњРµС‚РѕРґ run РєР»Р°СЃСЃР° NoteThread РґРѕР»Р¶РµРЅ 1000 СЂР°Р· РІС‹Р·С‹РІР°С‚СЊ Thread.sleep() c РїР°СЂР°РјРµС‚СЂРѕРј (1).
-6. РњРµС‚РѕРґ run РєР»Р°СЃСЃР° NoteThread РґРѕР»Р¶РµРЅ 1000 СЂР°Р· РІС‹Р·С‹РІР°С‚СЊ РјРµС‚РѕРґ removeNote c РїР°СЂР°РјРµС‚СЂРѕРј (getName()).
+1. Класс Solution должен содержать public static класс NoteThread.
+2. Класс NoteThread должен быть нитью.
+3. В методе run класса NoteThread должен быть цикл.
+4. Метод run класса NoteThread должен 1000 раз вызывать метод addNote c параметром (getName() + "-Note" + index).
+5. Метод run класса NoteThread должен 1000 раз вызывать Thread.sleep() c параметром (1).
+6. Метод run класса NoteThread должен 1000 раз вызывать метод removeNote c параметром (getName()).
 */
 
 public class Solution {
+    public static class NoteThread extends Thread{
+        public void run(){
+            for (int i =0; i<1000;i++){
+            Note.addNote(getName() + "-Note" + i);
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                Note.removeNote(getName());
+            }
+        }
+
+    }
     public static void main(String[] args) {
         new NoteThread().start();
         new NoteThread().start();
@@ -41,11 +55,11 @@ public class Solution {
         public static void removeNote(String threadName) {
             String note = notes.remove(0);
             if (note == null) {
-                System.out.println("Р”СЂСѓРіР°СЏ РЅРёС‚СЊ СѓРґР°Р»РёР»Р° РЅР°С€Сѓ Р·Р°РјРµС‚РєСѓ");
+                System.out.println("Другая нить удалила нашу заметку");
             } else if (!note.startsWith(threadName)) {
-                System.out.println("РќРёС‚СЊ [" + threadName + "] СѓРґР°Р»РёР»Р° С‡СѓР¶СѓСЋ Р·Р°РјРµС‚РєСѓ [" + note + "]");
+                System.out.println("Нить [" + threadName + "] удалила чужую заметку [" + note + "]");
             } else {
-                System.out.println("РќРёС‚СЊ [" + threadName + "] СѓРґР°Р»РёР»Р° СЃРІРѕСЋ Р·Р°РјРµС‚РєСѓ [" + note + "]");
+                System.out.println("Нить [" + threadName + "] удалила свою заметку [" + note + "]");
             }
         }
     }

@@ -4,26 +4,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 /* 
-РЎРёРЅС…СЂРѕРЅРёР·РёСЂРѕРІР°РЅРЅС‹Рµ Р·Р°РјРµС‚РєРё
-1. РљР»Р°СЃСЃ Note Р±СѓРґРµС‚ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊСЃСЏ РЅРёС‚СЏРјРё. РџРѕСЌС‚РѕРјСѓ СЃРґРµР»Р°Р№ С‚Р°Рє, С‡С‚РѕР±С‹ РѕР±СЂР°С‰РµРЅРёСЏ Рє Р»РёСЃС‚Сѓ notes Р±Р»РѕРєРёСЂРѕРІР°Р»Рё РјСЊСЋС‚РµРєСЃ notes, РЅРµ this
-2. Р’СЃРµ System.out.println РЅРµ РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ Р·Р°Р±Р»РѕРєРёСЂРѕРІР°РЅС‹ (СЃРёРЅС…СЂРѕРЅРёР·РёСЂРѕРІР°РЅС‹), С‚.Рµ. РЅРµ РґРѕР»Р¶РЅС‹ РЅР°С…РѕРґРёС‚СЊСЃСЏ РІ Р±Р»РѕРєРµ synchronized
+Синхронизированные заметки
+1. Класс Note будет использоваться нитями. Поэтому сделай так, чтобы обращения к листу notes блокировали мьютекс notes, не this
+2. Все System.out.println не должны быть заблокированы (синхронизированы), т.е. не должны находиться в блоке synchronized
 
 
 Requirements:
-1. РњРµС‚РѕРґ addNote() РґРѕР»Р¶РµРЅ РґРѕР±Р°РІР»СЏС‚СЊ Р·Р°РїРёСЃРєРё РІ СЃРїРёСЃРѕРє notes.
-2. РњРµС‚РѕРґ removeNote() РґРѕР»Р¶РµРЅ СѓРґР°Р»СЏС‚СЊ Р·Р°РїРёСЃРєСѓ РёР· СЃРїРёСЃРєР° notes.
-3. Р’ РјРµС‚РѕРґРµ addNote() РґРѕР»Р¶РµРЅ РЅР°С…РѕРґРёС‚СЊСЃСЏ synchronized Р±Р»РѕРє.
-4. Р’ РјРµС‚РѕРґРµ removeNote() РґРѕР»Р¶РµРЅ РЅР°С…РѕРґРёС‚СЊСЃСЏ synchronized Р±Р»РѕРє.
-5. Synchronized Р±Р»РѕРє РІ РјРµС‚РѕРґРµ addNote() РґРѕР»Р¶РµРЅ Р±Р»РѕРєРёСЂРѕРІР°С‚СЊ РјСЊСЋС‚РµРєСЃ notes.
-6. Synchronized Р±Р»РѕРє РІ РјРµС‚РѕРґРµ removeNote() РґРѕР»Р¶РµРЅ Р±Р»РѕРєРёСЂРѕРІР°С‚СЊ РјСЊСЋС‚РµРєСЃ notes.
-7. Р’ synchronized Р±Р»РѕРєРµ РјРµС‚РѕРґР° addNote() РґРѕР»Р¶РµРЅ РЅР°С…РѕРґРёС‚СЊСЃСЏ РІС‹Р·РѕРІ РјРµС‚РѕРґР° add Сѓ notes.
-8. Р’ synchronized Р±Р»РѕРєРµ РјРµС‚РѕРґР° removeNote() РґРѕР»Р¶РµРЅ РЅР°С…РѕРґРёС‚СЊСЃСЏ РІС‹Р·РѕРІ РјРµС‚РѕРґР° remove Сѓ notes.
-9. Р’СЃРµ РєРѕРјР°РЅРґС‹ РІС‹РІРѕРґР° РЅР° СЌРєСЂР°РЅ РЅРµ РґРѕР»Р¶РЅС‹ РЅР°С…РѕРґРёС‚СЊСЃСЏ РІ Р±Р»РѕРєРµ synchronized.*/
+1. Метод addNote() должен добавлять записки в список notes.
+2. Метод removeNote() должен удалять записку из списка notes.
+3. В методе addNote() должен находиться synchronized блок.
+4. В методе removeNote() должен находиться synchronized блок.
+5. Synchronized блок в методе addNote() должен блокировать мьютекс notes.
+6. Synchronized блок в методе removeNote() должен блокировать мьютекс notes.
+7. В synchronized блоке метода addNote() должен находиться вызов метода add у notes.
+8. В synchronized блоке метода removeNote() должен находиться вызов метода remove у notes.
+9. Все команды вывода на экран не должны находиться в блоке synchronized.*/
 
 public class Solution {
 
     public static void main(String[] args) {
-
+        Note note = new Note();
+        note.addNote(0, "первая");
+        note.removeNote(0);
     }
 
     public static class Note {
@@ -31,15 +33,20 @@ public class Solution {
         public final List<String> notes = new ArrayList<String>();
 
         public void addNote(int index, String note) {
-            System.out.println("РЎРµР№С‡Р°СЃ Р±СѓРґРµС‚ РґРѕР±Р°РІР»РµРЅР° Р·Р°РјРµС‚РєР° [" + note + "] РќР° РїРѕР·РёС†РёСЋ " + index);
-            notes.add(index, note);
-            System.out.println("РЈР¶Рµ РґРѕР±Р°РІР»РµРЅР° Р·Р°РјРµС‚РєР° [" + note + "]");
+            System.out.println("Сейчас будет добавлена заметка [" + note + "] На позицию " + index);
+            synchronized (notes) {
+                notes.add(index, note);
+            }
+            System.out.println("Уже добавлена заметка [" + note + "]");
         }
 
         public void removeNote(int index) {
-            System.out.println("РЎРµР№С‡Р°СЃ Р±СѓРґРµС‚ СѓРґР°Р»РµРЅР° Р·Р°РјРµС‚РєР° СЃ РїРѕР·РёС†РёРё " + index);
-            String note = notes.remove(index);
-            System.out.println("РЈР¶Рµ СѓРґР°Р»РµРЅР° Р·Р°РјРµС‚РєР° [" + note + "] СЃ РїРѕР·РёС†РёРё " + index);
+            System.out.println("Сейчас будет удалена заметка с позиции " + index);
+            String note;
+            synchronized (notes) {
+                note = notes.remove(index);
+            }
+            System.out.println("Уже удалена заметка [" + note + "] с позиции " + index);
         }
     }
 

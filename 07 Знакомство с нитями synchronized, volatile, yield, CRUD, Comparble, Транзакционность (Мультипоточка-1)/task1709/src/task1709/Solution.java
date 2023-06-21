@@ -1,24 +1,24 @@
 package task1709;
 
 /* 
-РџСЂРµРґР»РѕР¶РµРЅРёСЏ
-РќРµ РёСЃРїРѕР»СЊР·СѓСЏ synchronized СЃРґРµР»Р°Р№ С‚Р°Рє, С‡С‚РѕР±С‹ РєРѕР»РёС‡РµСЃС‚РІРѕ СЃРґРµР»Р°РЅРЅС‹С… Рё РїСЂРёРЅСЏС‚С‹С… РїСЂРµРґР»РѕР¶РµРЅРёР№ Р±С‹Р»Рѕ РѕРґРёРЅР°РєРѕРІС‹Рј.
+Предложения
+Не используя synchronized сделай так, чтобы количество сделанных и принятых предложений было одинаковым.
 
 
 Requirements:
-1. РљР»Р°СЃСЃ Solution РґРѕР»Р¶РµРЅ СЃРѕРґРµСЂР¶Р°С‚СЊ РЅРёС‚СЊ MakeProposal.
-2. РљР»Р°СЃСЃ Solution РґРѕР»Р¶РµРЅ СЃРѕРґРµСЂР¶Р°С‚СЊ РЅРёС‚СЊ AcceptProposal.
-3. РљР»Р°СЃСЃ Solution РґРѕР»Р¶РµРЅ СЃРѕРґРµСЂР¶Р°С‚СЊ РїСѓР±Р»РёС‡РЅСѓСЋ СЃС‚Р°С‚РёС‡РµСЃРєСѓСЋ РїРµСЂРµРјРµРЅРЅСѓСЋ int proposal.
-4. РџСЂРѕРіСЂР°РјРјР° РЅРµ РґРѕР»Р¶РЅР° СЃРѕРґРµСЂР¶Р°С‚СЊ synchronized РјРµС‚РѕРґРѕРІ РёР»Рё synchronized Р±Р»РѕРєРѕРІ.
-5. РџРµСЂРµРјРµРЅРЅР°СЏ int proposal РЅРµ РґРѕР»Р¶РЅР° РЅР°С…РѕРґРёС‚СЃСЏ РІ Р»РѕРєР°Р»СЊРЅРѕРј РєСЌС€Рµ.
+1. Класс Solution должен содержать нить MakeProposal.
+2. Класс Solution должен содержать нить AcceptProposal.
+3. Класс Solution должен содержать публичную статическую переменную int proposal.
+4. Программа не должна содержать synchronized методов или synchronized блоков.
+5. Переменная int proposal не должна находится в локальном кэше.
 */
 
 public class Solution {
-    public static int proposal = 0;
+   volatile public static int proposal = 0;
 
-    public static void main(String[] args) {
-        new AcceptProposal().start();
+    public static void main(String[] args) throws InterruptedException {
         new MakeProposal().start();
+        new AcceptProposal().start();
     }
 
     public static class MakeProposal extends Thread {
@@ -27,10 +27,10 @@ public class Solution {
             int thisProposal = proposal;
 
             while (proposal < 10) {
-                System.out.println("РЎРґРµР»Р°РЅРѕ РїСЂРµРґР»РѕР¶РµРЅРёРµ в„–" + (thisProposal + 1));
+                System.out.println("Сделано предложение №" + (thisProposal + 1));
                 proposal = ++thisProposal;
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(200);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -47,7 +47,7 @@ public class Solution {
 
             while (thisProposal < 10) {
                 if (thisProposal != proposal) {
-                    System.out.println("РџСЂРёРЅСЏС‚Рѕ РїСЂРµРґР»РѕР¶РµРЅРёРµ в„–" + proposal);
+                    System.out.println("Принято предложение №" + proposal);
                     thisProposal = proposal;
                 }
 

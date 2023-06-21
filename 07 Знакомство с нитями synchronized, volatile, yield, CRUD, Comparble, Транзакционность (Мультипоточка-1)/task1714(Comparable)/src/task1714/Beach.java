@@ -2,57 +2,96 @@ package task1714;
 
 /* 
 Comparable
-Р РµР°Р»РёР·СѓР№ РёРЅС‚РµСЂС„РµР№СЃ Comparable<Beach> РІ РєР»Р°СЃСЃРµ Beach. РџР»СЏР¶Рё(Beach) Р±СѓРґСѓС‚ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊСЃСЏ РЅРёС‚СЏРјРё, РїРѕСЌС‚РѕРјСѓ РїРѕР·Р°Р±РѕС‚СЊСЃСЏ, С‡С‚РѕР±С‹ РІСЃРµ РјРµС‚РѕРґС‹ Р±С‹Р»Рё СЃРёРЅС…СЂРѕРЅРёР·РёСЂРѕРІР°РЅС‹.
-Р РµР°Р»РёР·СѓР№ РјРµС‚РѕРґ compareTo С‚Р°Рє, С‡С‚РѕР±С‹ РїСЂРё СЃСЂР°РІРЅРµРЅРёРё РґРІСѓС… РїР»СЏР¶РµР№ РѕРЅ РІС‹РґР°РІР°Р»:
-вЂ“ РїРѕР»РѕР¶РёС‚РµР»СЊРЅРѕРµ С‡РёСЃР»Рѕ, РµСЃР»Рё РїРµСЂРІС‹Р№ РїР»СЏР¶ Р»СѓС‡С€Рµ;
-вЂ“ РѕС‚СЂРёС†Р°С‚РµР»СЊРЅРѕРµ С‡РёСЃР»Рѕ, РµСЃР»Рё РІС‚РѕСЂРѕР№ РїР»СЏР¶ Р»СѓС‡С€Рµ;
-вЂ“ РЅРѕР»СЊ, РµСЃР»Рё РїР»СЏР¶Рё РѕРґРёРЅР°РєРѕРІС‹Рµ.
-РЎСЂР°РІРЅРё РєР°Р¶РґС‹Р№ РєСЂРёС‚РµСЂРёР№ РїРѕ РѕС‚РґРµР»СЊРЅРѕСЃС‚Рё, С‡С‚РѕР±С‹ РїРѕР±РµРґРёС‚РµР»РµРј Р±С‹Р» РїР»СЏР¶ СЃ Р»СѓС‡С€РёРјРё РїРѕРєР°Р·Р°С‚РµР»СЏРјРё РїРѕ Р±РѕР»СЊС€РёРЅСЃС‚РІСѓ РєСЂРёС‚РµСЂРёРµРІ. РЈС‡С‚Рё РїСЂРё СЃСЂР°РІРЅРµРЅРёРё, С‡РµРј РјРµРЅСЊС€Рµ СЂР°СЃСЃС‚РѕСЏРЅРёРµ Рє РїР»СЏР¶Сѓ (distance), С‚РµРј РїР»СЏР¶ Р»СѓС‡С€Рµ.
+Реализуй интерфейс Comparable<Beach> в классе Beach. Пляжи(Beach) будут использоваться нитями,
+поэтому позаботься, чтобы все методы были синхронизированы.
+Реализуй метод compareTo так, чтобы при сравнении двух пляжей он выдавал:
+– положительное число, если первый пляж лучше;
+– отрицательное число, если второй пляж лучше;
+– ноль, если пляжи одинаковые.
+Сравни каждый критерий по отдельности, чтобы победителем был пляж с лучшими показателями по большинству критериев.
+Учти при сравнении, чем меньше расстояние к пляжу (distance), тем пляж лучше.
 
 
 Requirements:
-1. РљР»Р°СЃСЃ Beach РґРѕР»Р¶РµРЅ СЃРѕРґРµСЂР¶Р°С‚СЊ С‚СЂРё РїРѕР»СЏ: String name, float distance, int quality.
-2. РљР»Р°СЃСЃ Beach РґРѕР»Р¶РµРЅ СЂРµР°Р»РёР·РѕРІС‹РІР°С‚СЊ РёРЅС‚РµСЂС„РµР№СЃ Comparable<Beach>.
-3. РњРµС‚РѕРґ compareTo РєР»Р°СЃСЃР° Beach РґРѕР»Р¶РµРЅ СѓС‡РёС‚С‹РІР°С‚СЊ РєР°С‡РµСЃС‚РІРѕ РїР»СЏР¶Р° (quality) Рё РґРёСЃС‚Р°РЅС†РёСЋ (distance).
-4. Р’СЃРµ РјРµС‚РѕРґС‹ РєР»Р°СЃСЃР° Beach, РєСЂРѕРјРµ РјРµС‚РѕРґР° main, РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ СЃРёРЅС…СЂРѕРЅРёР·РёСЂРѕРІР°РЅС‹.
+1. Класс Beach должен содержать три поля: String name, float distance, int quality.
+2. Класс Beach должен реализовывать интерфейс Comparable<Beach>.
+3. Метод compareTo класса Beach должен учитывать качество пляжа (quality) и дистанцию (distance).
+4. Все методы класса Beach, кроме метода main, должны быть синхронизированы.
 */
 
-public class Beach {
-    private String name;      //РЅР°Р·РІР°РЅРёРµ
-    private float distance;   //СЂР°СЃСЃС‚РѕСЏРЅРёРµ
-    private int quality;    //РєР°С‡РµСЃС‚РІРѕ
+import java.util.Random;
 
-    public Beach(String name, float distance, int quality) {
+public class Beach implements Comparable<Beach> { //2. Класс Beach должен реализовывать интерфейс Comparable<Beach>.
+    private String name;      //название
+    private float distance;   //расстояние
+    private int quality;    //качество
+
+    public Beach() {
         this.name = name;
         this.distance = distance;
         this.quality = quality;
     }
 
-    public String getName() {
+    public synchronized String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public synchronized void setName(String name) {
         this.name = name;
     }
 
-    public float getDistance() {
+    public synchronized float getDistance() {
         return distance;
     }
 
-    public void setDistance(float distance) {
+    public synchronized void setDistance(float distance) {
         this.distance = distance;
     }
 
-    public int getQuality() {
+    public synchronized int getQuality() {
         return quality;
     }
 
-    public void setQuality(int quality) {
+    public synchronized void setQuality(int quality) {
         this.quality = quality;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) {  //– положительное число, если первый пляж лучше;
+        Random random = new Random();
+        Beach beach1 = new Beach();         //– отрицательное число, если второй пляж лучше;
+        beach1.setName("Первый");           //– ноль, если пляжи одинаковые.
+        beach1.setDistance(random.nextInt(180));
+        beach1.setQuality(random.nextInt(5));
+        System.out.println("Расстояние до первого пляжа: " + beach1.getDistance() + " Оценка первого пляжа: " + beach1.getQuality());
+        Beach beach2 = new Beach();
+        beach2.setName("Второй");
+        beach2.setDistance(random.nextInt(180));
+        beach2.setQuality(random.nextInt(5));
+        System.out.println("Расстояние до второго пляжа: " + beach2.getDistance() + " Оценка второго пляжа: " + beach2.getQuality());
+        System.out.println(beach1.compareTo(beach2));
+        if (beach1.compareTo(beach2) == 1) {
+            System.out.println(beach1.getName() + " пляж лучше");
+        } else if (beach1.compareTo(beach2) == -1) {
+            System.out.println(beach2.getName() + " пляж лучше");
+        } else System.out.println("Пляжи равны");
+    }
 
+    @Override
+    public synchronized int compareTo(Beach o) {
+        if (this.quality > o.quality) {
+            return 1;
+        } else if (this.quality < o.quality) {
+            return -1;
+        } else {
+            if (this.distance > o.distance) {
+                return -1;
+            } else if (this.distance < o.distance) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+        //return 10000 * name.compareTo(obj.getName()) + 100 * second + first;
     }
 }
+

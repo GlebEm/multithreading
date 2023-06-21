@@ -3,30 +3,32 @@ package task1631;
 
 /* 
 Factory method pattern
-1. Р’РЅРёРјР°С‚РµР»СЊРЅРѕ РїРѕСЃРјРѕС‚СЂРё, РєР°РєРёРµ РєР»Р°СЃСЃС‹ Сѓ С‚РµР±СЏ РµСЃС‚СЊ.
-2. Р’ РѕС‚РґРµР»СЊРЅС‹С… С„Р°Р№Р»Р°С… РІ РїР°РєРµС‚Рµ common СЃРѕР·РґР°Р№ РєР»Р°СЃСЃС‹ JpgReader, PngReader, BmpReader, РєРѕС‚РѕСЂС‹Рµ СЂРµР°Р»РёР·СѓСЋС‚ РёРЅС‚РµСЂС„РµР№СЃ ImageReader.
-3. Р’ РѕС‚РґРµР»СЊРЅРѕРј С„Р°Р№Р»Рµ РІ РѕСЃРЅРѕРІРЅРѕРј РїР°РєРµС‚Рµ СЃРѕР·РґР°Р№ РєР»Р°СЃСЃ ImageReaderFactory СЃ РѕРґРЅРёРј РјРµС‚РѕРґРѕРј.
-3.1. РџРѕРґСѓРјР°Р№, РєР°Рє РѕРЅ РґРѕР»Р¶РµРЅ РЅР°Р·С‹РІР°С‚СЊСЃСЏ.
-3.2. РџРѕРґСѓРјР°Р№, РєР°РєРёРµ РјРѕРґРёС„РёРєР°С‚РѕСЂС‹ РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ Сѓ СЌС‚РѕРіРѕ РјРµС‚РѕРґР°.
-4. Р­С‚РѕС‚ РјРµС‚РѕРґ РґРѕР»Р¶РµРЅ:
-4.1. Р”Р»СЏ РєР°Р¶РґРѕРіРѕ Р·РЅР°С‡РµРЅРёСЏ РёР· ImageTypes РІРѕР·РІСЂР°С‰Р°С‚СЊ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёР№ Reader, РЅР°РїСЂРёРјРµСЂ, РґР»СЏ ImageTypes.JPG - JpgReader;
-4.2. Р•СЃР»Рё РїРµСЂРµРґР°РЅ РЅРµРїСЂР°РІРёР»СЊРЅС‹Р№ РїР°СЂР°РјРµС‚СЂ (РІ С‚.С‡. null), С‚Рѕ РІС‹Р±СЂР°СЃС‹РІР°С‚СЊ РёСЃРєР»СЋС‡РµРЅРёРµ IllegalArgumentException("РќРµРёР·РІРµСЃС‚РЅС‹Р№ С‚РёРї РєР°СЂС‚РёРЅРєРё").
+1. Внимательно посмотри, какие классы у тебя есть.
+2. В отдельных файлах в пакете common создай классы JpgReader, PngReader, BmpReader, которые реализуют интерфейс ImageReader.
+3. В отдельном файле в основном пакете создай класс ImageReaderFactory с одним методом.
+3.1. Подумай, как он должен называться.
+3.2. Подумай, какие модификаторы должны быть у этого метода.
+4. Этот метод должен:
+4.1. Для каждого значения из ImageTypes возвращать соответствующий Reader, например, для ImageTypes.JPG - JpgReader;
+4.2. Если передан неправильный параметр (в т.ч. null), то выбрасывать исключение IllegalArgumentException("Неизвестный тип картинки").
 
 
 Requirements:
-1. РЎРѕР·РґР°Р№ РІ РїР°РєРµС‚Рµ common РєР»Р°СЃСЃ JpgReader, СЂРµР°Р»РёР·СѓСЋС‰РёР№ РёРЅС‚РµСЂС„РµР№СЃ ImageReader.
-2. РЎРѕР·РґР°Р№ РІ РїР°РєРµС‚Рµ common РєР»Р°СЃСЃ PngReader, СЂРµР°Р»РёР·СѓСЋС‰РёР№ РёРЅС‚РµСЂС„РµР№СЃ ImageReader.
-3. РЎРѕР·РґР°Р№ РІ РїР°РєРµС‚Рµ common РєР»Р°СЃСЃ BmpReader, СЂРµР°Р»РёР·СѓСЋС‰РёР№ РёРЅС‚РµСЂС„РµР№СЃ ImageReader.
-4. РЎРѕР·РґР°Р№ РїСѓР±Р»РёС‡РЅС‹Р№ РєР»Р°СЃСЃ ImageReaderFactory.
-5. Р”РѕР±Р°РІСЊ РІ РєР»Р°СЃСЃ ImageReaderFactory РѕС‚РєСЂС‹С‚С‹Р№ СЃС‚Р°С‚РёС‡РµСЃРєРёР№ РјРµС‚РѕРґ getImageReader СЃ РїР°СЂР°РјРµС‚СЂРѕРј ImageTypes.
-6. РњРµС‚РѕРґ getImageReader РґРѕР»Р¶РµРЅ СЃРѕР·РґР°РІР°С‚СЊ Рё РІРѕР·РІСЂР°С‰Р°С‚СЊ РїРѕРґС…РѕРґСЏС‰РёР№ Reader.
-7. РњРµС‚РѕРґ getImageReader РґРѕР»Р¶РµРЅ РєРёРґР°С‚СЊ РёСЃРєР»СЋС‡РµРЅРёРµ IllegalArgumentException, РµСЃР»Рё РїРµСЂРµРґР°РЅ РЅРµРїСЂР°РІРёР»СЊРЅС‹Р№ РїР°СЂР°РјРµС‚СЂ.*/
+1. Создай в пакете common класс JpgReader, реализующий интерфейс ImageReader.
+2. Создай в пакете common класс PngReader, реализующий интерфейс ImageReader.
+3. Создай в пакете common класс BmpReader, реализующий интерфейс ImageReader.
+4. Создай публичный класс ImageReaderFactory.
+5. Добавь в класс ImageReaderFactory открытый статический метод getImageReader с параметром ImageTypes.
+6. Метод getImageReader должен создавать и возвращать подходящий Reader.
+7. Метод getImageReader должен кидать исключение IllegalArgumentException, если передан неправильный параметр.*/
 
 import task1631.common.ImageReader;
 import task1631.common.ImageTypes;
+import task1631.common.JpgReader;
 
 public class Solution {
-    public static void main(String[] args) {
-        ImageReader reader = ImageReaderFactory.getImageReader(ImageTypes.JPG);
+    public static void main(String[] args) throws IllegalArgumentException {
+               ImageReader reader = ImageReaderFactory.getImageReader(ImageTypes.JPG);
+               System.out.println(reader.getClass());
     }
 }

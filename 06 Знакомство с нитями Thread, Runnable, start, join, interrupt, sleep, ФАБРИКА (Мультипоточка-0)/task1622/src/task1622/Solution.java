@@ -26,7 +26,8 @@ public class Solution {
 
     public static void main(String[] args) throws InterruptedException {
         for (int i = 0; i < COUNT; i++) {
-            new SleepingThread();
+            new SleepingThread().join(); //2. Метод main должен вызвать join у каждой создаваемой SleepingThread нити
+
             //напишите тут ваш код
         }
     }
@@ -40,10 +41,16 @@ public class Solution {
             start();
         }
 
-        public void run() {
+        public void run() { //3. Метод run должен использовать Thread.sleep(10).
             while (true) {
                 System.out.println(this);
                 if (--countdownIndex == 0) return;
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    System.out.println("Нить прервана");   //5. Если нить SleepingThread прерывается, она должна вывести сообщение "Нить прервана".*/
+                }
                 //напишите тут ваш код
             }
         }

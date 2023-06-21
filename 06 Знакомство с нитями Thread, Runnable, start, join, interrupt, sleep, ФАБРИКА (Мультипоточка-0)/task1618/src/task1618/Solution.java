@@ -1,24 +1,37 @@
 package task1618;
 
 /* 
-РЎРЅРѕРІР° interrupt
-РЎРѕР·РґР°Р№ РЅРёС‚СЊ TestThread.
-Р’ РјРµС‚РѕРґРµ main СЃРѕР·РґР°Р№ СЌРєР·РµРјРїР»СЏСЂ РЅРёС‚Рё, Р·Р°РїСѓСЃС‚Рё, Р° РїРѕС‚РѕРј РїСЂРµСЂРІРё РµРµ РёСЃРїРѕР»СЊР·СѓСЏ РјРµС‚РѕРґ interrupt().
+Снова interrupt
+Создай нить TestThread.
+В методе main создай экземпляр нити, запусти, а потом прерви ее используя метод interrupt().
 
 
 Requirements:
-1. РљР»Р°СЃСЃ TestThread РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ СѓРЅР°СЃР»РµРґРѕРІР°РЅ РѕС‚ Thread.
-2. РљР»Р°СЃСЃ TestThread РґРѕР»Р¶РµРЅ РёРјРµС‚СЊ public void РјРµС‚РѕРґ run.
-3. РњРµС‚РѕРґ main РґРѕР»Р¶РµРЅ СЃРѕР·РґР°РІР°С‚СЊ РѕР±СЉРµРєС‚ С‚РёРїР° TestThread.
-4. РњРµС‚РѕРґ main РґРѕР»Р¶РµРЅ РІС‹Р·С‹РІР°С‚СЊ РјРµС‚РѕРґ start Сѓ РѕР±СЉРµРєС‚Р° С‚РёРїР° TestThread.
-5. РњРµС‚РѕРґ main РґРѕР»Р¶РµРЅ РІС‹Р·С‹РІР°С‚СЊ РјРµС‚РѕРґ interrupt Сѓ РѕР±СЉРµРєС‚Р° С‚РёРїР° TestThread.*/
+1. Класс TestThread должен быть унаследован от Thread.
+2. Класс TestThread должен иметь public void метод run.
+3. Метод main должен создавать объект типа TestThread.
+4. Метод main должен вызывать метод start у объекта типа TestThread.
+5. Метод main должен вызывать метод interrupt у объекта типа TestThread.*/
 
 public class Solution {
     public static void main(String[] args) throws InterruptedException {
-        //Add your code here - РґРѕР±Р°РІСЊ РєРѕРґ С‚СѓС‚
+        TestThread testThread = new TestThread();
+        testThread.start();
+        Thread.sleep(1);
+        testThread.interrupt();
+        //Add your code here - добавь код тут
     }
 
-    //Add your code below - РґРѕР±Р°РІСЊ РєРѕРґ РЅРёР¶Рµ
-    public static class TestThread {
+    //Add your code below - добавь код ниже
+    public static class TestThread extends Thread {
+        public void run() {
+            while (true) {
+                System.out.println("*****Поток идет****** ");
+                if (isInterrupted()) {
+                    System.out.println("ххххх Поток прерван хххххх");
+                    break;
+                }
+            }
+        }
     }
 }

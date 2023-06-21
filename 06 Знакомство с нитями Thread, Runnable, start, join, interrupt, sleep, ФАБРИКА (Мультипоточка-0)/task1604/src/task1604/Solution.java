@@ -1,20 +1,32 @@
 package task1604;
 
 /* 
-Р’С‹РІРѕРґ СЃС‚РµРє-С‚СЂРµР№СЃР°
-1. РЎРѕР·РґР°С‚СЊ С‚Р°СЃРє (public static РєР»Р°СЃСЃ SpecialThread, РєРѕС‚РѕСЂС‹Р№ СЂРµР°Р»РёР·СѓРµС‚ РёРЅС‚РµСЂС„РµР№СЃ Runnable).
-2. SpecialThread РґРѕР»Р¶РµРЅ РІС‹РІРѕРґРёС‚СЊ РІ РєРѕРЅСЃРѕР»СЊ СЃРІРѕР№ СЃС‚РµРє-С‚СЂРµР№СЃ.
+Вывод стек-трейса
+1. Создать таск (public static класс SpecialThread, который реализует интерфейс Runnable).
+2. SpecialThread должен выводить в консоль свой стек-трейс.
 
-РџРѕРґСЃРєР°Р·РєР°: main thread СѓР¶Рµ РІС‹РІРѕРґРёС‚ РІ РєРѕРЅСЃРѕР»СЊ СЃРІРѕР№ СЃС‚РµРє-С‚СЂРµР№СЃ.
+Подсказка: main thread уже выводит в консоль свой стек-трейс.
 
 
 Requirements:
-1. Р”РѕР±Р°РІСЊ РІ РєР»Р°СЃСЃ Solution РїСѓР±Р»РёС‡РЅС‹Р№ СЃС‚Р°С‚РёС‡РµСЃРєРёР№ РєР»Р°СЃСЃ SpecialThread.
-2. РљР»Р°СЃСЃ SpecialThread РЅРµ РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ СѓРЅР°СЃР»РµРґРѕРІР°РЅ РѕС‚ РєР°РєРѕРіРѕ-Р»РёР±Рѕ РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅРѕРіРѕ РєР»Р°СЃСЃР°.
-3. РљР»Р°СЃСЃ SpecialThread РґРѕР»Р¶РµРЅ СЂРµР°Р»РёР·РѕРІС‹РІР°С‚СЊ РёРЅС‚РµСЂС„РµР№СЃ Runnable.
-4. РњРµС‚РѕРґ run РєР»Р°СЃСЃР° SpecialThread РґРѕР»Р¶РµРЅ РІС‹РІРѕРґРёС‚СЊ СЃРІРѕР№ СЃС‚РµРє-С‚СЂРµР№СЃ.*/
+1. Добавь в класс Solution публичный статический класс SpecialThread.
+2. Класс SpecialThread не должен быть унаследован от какого-либо дополнительного класса.
+3. Класс SpecialThread должен реализовывать интерфейс Runnable.
+4. Метод run класса SpecialThread должен выводить свой стек-трейс.*/
+
+import java.util.Arrays;
 
 public class Solution {
+    public static class SpecialThread implements Runnable{
+
+        @Override
+        public void run() {
+            for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
+                System.out.println(element);
+            }
+            //System.out.println("Стек-трейс: "+ Arrays.toString(Thread.currentThread().getStackTrace()));
+        }
+    }
     public static void main(String[] args) throws InterruptedException {
         Thread thread = new Thread(new SpecialThread());
         thread.start();

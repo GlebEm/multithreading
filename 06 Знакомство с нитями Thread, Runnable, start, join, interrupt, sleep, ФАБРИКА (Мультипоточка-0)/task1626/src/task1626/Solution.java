@@ -1,28 +1,55 @@
 package task1626;
 
 /* 
-РЎРѕР·РґР°РЅРёРµ РїРѕ РѕР±СЂР°Р·С†Сѓ
-Р Р°Р·Р±РµСЂРёСЃСЊ, РєР°Рє СЂР°Р±РѕС‚Р°РµС‚ РїСЂРѕРіСЂР°РјРјР°.
-РџРѕ РѕР±СЂР°Р·Сѓ Рё РїРѕРґРѕР±РёСЋ CountdownRunnable СЃРѕР·РґР°Р№ РЅРёС‚СЊ CountUpRunnable, РєРѕС‚РѕСЂР°СЏ РІС‹РІРѕРґРёС‚ Р·РЅР°С‡РµРЅРёСЏ РІ РЅРѕСЂРјР°Р»СЊРЅРѕРј РїРѕСЂСЏРґРєРµ - РѕС‚ 1 РґРѕ number.
+Создание по образцу
+Разберись, как работает программа.
+По образу и подобию CountdownRunnable создай нить CountUpRunnable, которая выводит значения в нормальном порядке - от 1 до number.
 
 
 Requirements:
-1. РљР»Р°СЃСЃ CountUpRunnable РґРѕР»Р¶РµРЅ СЂРµР°Р»РёР·РѕРІС‹РІР°С‚СЊ РёРЅС‚РµСЂС„РµР№СЃ Runnable.
-2. РљР»Р°СЃСЃ CountUpRunnable РґРѕР»Р¶РµРЅ РёРјРµС‚СЊ РїСѓР±Р»РёС‡РЅС‹Р№ РјРµС‚РѕРґ run Р±РµР· РїР°СЂР°РјРµС‚СЂРѕРІ.
-3. РњРµС‚РѕРґ run РєР»Р°СЃСЃР° CountUpRunnable РґРѕР»Р¶РµРЅ СЂР°Р±РѕС‚Р°С‚СЊ РїСЂРёРјРµСЂРЅРѕ 2,5 СЃРµРєСѓРЅРґС‹.
-4. РњРµС‚РѕРґ run РєР»Р°СЃСЃР° CountUpRunnable РґРѕР»Р¶РµРЅ РєР°Р¶РґС‹Рµ РїРѕР»СЃРµРєСѓРЅРґС‹ РІС‹РІРѕРґРёС‚СЊ РёРјСЏ РїРѕС‚РѕРєР°, РґРІРѕРµС‚РѕС‡РёРµ Рё Р·РЅР°С‡РµРЅРёРµ СЃС‡РµС‚С‡РёРєР° РѕС‚ 1 РґРѕ 5 (РЅР°РїСЂРёРјРµСЂ: "РЈРІРµР»РёС‡РёРІР°РµРј: 1").
-5. РњРµС‚РѕРґ run РєР»Р°СЃСЃР° CountUpRunnable РґРѕР»Р¶РµРЅ РІС‹Р·С‹РІР°С‚СЊ Thread.sleep(500).*/
+1. Класс CountUpRunnable должен реализовывать интерфейс Runnable.
+2. Класс CountUpRunnable должен иметь публичный метод run без параметров.
+3. Метод run класса CountUpRunnable должен работать примерно 2,5 секунды.
+4. Метод run класса CountUpRunnable должен каждые полсекунды выводить имя потока, двоеточие и значение счетчика от 1 до 5 (например: "Увеличиваем: 1").
+5. Метод run класса CountUpRunnable должен вызывать Thread.sleep(500).*/
 
 public class Solution {
     public static int number = 5;
 
-    public static void main(String[] args) {
-        new Thread(new CountdownRunnable(), "РЈРјРµРЅСЊС€Р°РµРј").start();
-        new Thread(new CountUpRunnable(), "РЈРІРµР»РёС‡РёРІР°РµРј").start();
+    public static void main(String[] args) throws InterruptedException {
+        new Thread(new CountdownRunnable(), "Уменьшаем").start();
+        Thread.sleep(2500);
+        new Thread(new CountUpRunnable(), "Увеличиваем").start();
     }
 
-    public static class CountUpRunnable {
-        //Add your code here - РґРѕР±Р°РІСЊ РєРѕРґ С‚СѓС‚
+    public static class CountUpRunnable implements Runnable {
+        private int countIndexUp = Solution.number -4;
+
+        @Override
+        public void run() {
+            try {
+                while (true) {
+                    System.out.println(toString());
+                    countIndexUp += 1;
+                    if (countIndexUp == 5) return;
+                    Thread.sleep(500);
+                }
+            } catch (InterruptedException e) {
+
+//            try {
+//                for(int i =1; i<=number;i++){
+//                    Thread.sleep(500);
+//                    System.out.println("Увеличиваем: "+i);
+//                }
+//            }catch (InterruptedException e){
+//                e.printStackTrace();
+//            }
+            }
+            //Add your code here - добавь код тут
+        }
+        public String toString() {
+            return Thread.currentThread().getName() + ": " + countIndexUp;
+        }
     }
 
 
